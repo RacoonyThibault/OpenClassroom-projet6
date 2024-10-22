@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user');
 const booksRoutes = require('./routes/books');
+const path = require('path');
 const {mongoCredential} = require('./utils');
 
-mongoose.connect(`mongodb+srv://${mongoCredential}@cluster0.f28s5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+mongoose.connect(`mongodb+srv://${mongoCredential}@cluster0.f28s5.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0`,
     { useNewUrlParser: true,
       useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -29,5 +30,6 @@ app.use((req, res, next) => {
 
 app.use('/api/auth', userRoutes);
 app.use('/api/books', booksRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;

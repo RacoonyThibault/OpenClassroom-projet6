@@ -6,7 +6,7 @@ exports.createBook = (req, res, next) => {
     delete bookObject._id;
     const book = new Books({
         ...bookObject,
-        imageUrl: req.file.path
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     console.log(book);
     book.save()
@@ -62,6 +62,6 @@ exports.modifyBook = (req, res, next) => {
             ratings: ratingObject,
             averageRating: newAverageRating})
                 .then(() => { 
-                    Books.findOne({_id: req.params.id}).then(book => res.status(200).json(book))
+                Books.findOne({_id: req.params.id}).then(book => res.status(200).json(book))
                 }).catch(error => res.status(400).json({ error }))
             })};
