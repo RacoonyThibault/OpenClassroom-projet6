@@ -1,0 +1,1 @@
+module.exports = { mongoCredential: "tyshiapro:S7D28KaORaMD1sTh"}
