@@ -38,7 +38,7 @@ exports.deleteBook = (req, res, next) => {
             } else {
                 const filename = book.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
-                    Book.deleteOne({ _id: req.params.id })
+                    Books.deleteOne({ _id: req.params.id })
                         .then(() => { res.status(200).json({ message: 'Objet supprimé !' }) })
                         .catch(error => res.status(400).json({ error }));
                 });
@@ -52,7 +52,7 @@ exports.deleteBook = (req, res, next) => {
 exports.modifyBook = (req, res, next) => {
     const bookObject = req.file ? {
         ...JSON.parse(req.body.book),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/resized_${req.file.filename}` 
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
     } : { ...req.body };
 
     delete bookObject._userId;
@@ -66,7 +66,7 @@ exports.modifyBook = (req, res, next) => {
                         if (err) console.log(err);
                     })
                 );
-                Book.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
+                Books.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Objet modifié !' }))
                     .catch(error => res.status(400).json({ error }));
             }
@@ -90,7 +90,7 @@ exports.createRating = (req, res, next) => {
                     const grades = newRatings.map(rating => rating.grade);
                     const averageGrades = grades.reduce((a, b) => a + b, 0) / grades.length;
                     book.averageRating = averageGrades;
-                    Book.updateOne({ _id: req.params.id }, { ratings: newRatings, averageRating: averageGrades, _id: req.params.id })
+                    Books.updateOne({ _id: req.params.id }, { ratings: newRatings, averageRating: averageGrades, _id: req.params.id })
                         .then(() => { res.status(201).json()})
                         .catch(error => { res.status(400).json( { error })});
                     res.status(200).json(book);

@@ -4,6 +4,13 @@ const jwt = require('jsonwebtoken');
 
 
 exports.signup = (req, res, next) => {
+    const oldUser = User.findOne({ email: req.body.email })
+    .then((oldUser) => {
+      if (oldUser) {
+        //un utilisateur inscrit avec le même email existe
+        //-> on retourne une réponse sans aller plus loin
+        return res.status(409).json({ message: 'There was an error' });
+      } else {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         User.findOne({ email: req.body.email })
@@ -20,7 +27,7 @@ exports.signup = (req, res, next) => {
             .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
-})
+})}})
 };
 
 exports.login = async (req, res, next) => {
