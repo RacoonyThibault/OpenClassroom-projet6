@@ -11,7 +11,7 @@ Création d'une API avec node.js et mongoDB afin de gerer un site de notations d
 Avec la création de parmetre d'authentification et de différentes routes afin de gerer les interactions de l'utilisateur Front.
 
 
-## Technologies :gear:
+## Technologies 
 
 ***
 Liste des packages utilisés:
@@ -25,7 +25,7 @@ Liste des packages utilisés:
 *[multer](https://www.npmjs.com/package/multer): Version 1.4.5-lts.1,
 *[nodemon](https://www.npmjs.com/package/nodemon): Version 3.1.7
 
-## Installation :rocket:
+## Installation
 1. Cloner le depôt Git ou télécharger le.
 2. Depuis le dossier lancer la commande  `npm install` pour installer toute les dépendances
 3. Lancez le backend avec la commande `npm run dev` (depuis vsCode) ou `nodemon server` (depuis git bash)
