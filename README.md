@@ -25,7 +25,7 @@ Liste des packages utilisés:
 *[multer](https://www.npmjs.com/package/multer): Version 1.4.5-lts.1,
 *[nodemon](https://www.npmjs.com/package/nodemon): Version 3.1.7
 
-## Instalation :rocket:
+## Installation :rocket:
 1. Cloner le depôt Git ou télécharger le.
 2. Depuis le dossier lancer la commande  `npm install` pour installer toute les dépendances
 3. Lancez le backend avec la commande `npm run dev` (depuis vsCode) ou `nodemon server` (depuis git bash)
