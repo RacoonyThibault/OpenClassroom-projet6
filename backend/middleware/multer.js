@@ -14,16 +14,15 @@ const storage = multer.diskStorage({
         callback(null, 'images');
     },
     filename: (req, file, callback) => {
-        const name = file.originalname.split(' ').join('_');
+        const name = file.originalname.replace(/[^a-zA-Z0-9.]/g, '').split('.')[0];
         const extension = MIME_TYPES[file.mimetype];
-        callback(null, name + Date.now() + '.' + extension);
+        callback(null, name + "_"+ Date.now() + '.' + extension);
     }
 });
 
 module.exports = multer({storage: storage}).single('image');
 
-
-module.exports.resizeImage = (req, res, next) => {
+module.exports.resizeImage = async (req, res, next) => {
     if (!req.file) {
       return next();
     }
@@ -31,12 +30,20 @@ module.exports.resizeImage = (req, res, next) => {
     const filePath = req.file.path;
     const fileName = req.file.filename;
     const outputFilePath = path.join('images', `resized_${fileName}`);
-  
-    sharp(filePath)
+
+      try {
+        sharp(filePath)
       .resize({ width: 206, height: 260 })
       .toFile(outputFilePath)
       .then(() => {
-        fs.unlink(filePath, () => {
+        sharp.cache(false);
+
+        fs.unlink(filePath, (err) => {
+          if (err) {
+              console.error(err);
+              return next(err);
+          }
+
           req.file.path = outputFilePath;
           next();
         });
@@ -45,4 +52,9 @@ module.exports.resizeImage = (req, res, next) => {
         console.log(err);
         return next();
       });
+  
+    } catch (err) {
+        console.error('An error occurred during image processing:', err);
+        return next(err);
+    }
   };
