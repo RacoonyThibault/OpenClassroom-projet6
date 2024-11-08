@@ -12,7 +12,6 @@ exports.createBook = (req, res, next) => {
         imageUrl: `${req.protocol}://${req.get('host')}/images/resized_${req.file.filename}`,
         averageRating: bookObject.ratings[0].grade
     });
-    console.log(book);
     book.save()
     .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
     .catch(error => res.status(400).json({ error }));
@@ -62,9 +61,9 @@ exports.modifyBook = (req, res, next) => {
                 res.status(403).json({ message : '403: unauthorized request' });
             } else {
                 const filename = book.imageUrl.split('/images/')[1];
-                req.file && fs.unlink(`images/${filename}`, (err => {
-                        if (err) console.log(err);
-                    })
+                req.file && fs.unlink(`images/${filename}` , (err => {
+                    if (err) console.error(err);
+                })
                 );
                 Books.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Objet modifié !' }))

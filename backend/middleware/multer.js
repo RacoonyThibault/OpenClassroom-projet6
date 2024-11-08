@@ -40,21 +40,17 @@ module.exports.resizeImage = async (req, res, next) => {
 
         fs.unlink(filePath, (err) => {
           if (err) {
-              console.error(err);
               return next(err);
           }
 
-          req.file.path = outputFilePath;
           next();
         });
       })
       .catch(err => {
-        console.log(err);
         return next();
       });
   
     } catch (err) {
-        console.error('An error occurred during image processing:', err);
         return next(err);
     }
   };

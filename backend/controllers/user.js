@@ -30,19 +30,14 @@ exports.signup = (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email })
-        console.log(user);
         if (!user){
             res.status(401).json({ error: 'paire utilisateur/mot de passe incorrecte !' });
         }else{
-            console.log(req.body.password);
-            console.log(user.password);
             bcrypt.compare(req.body.password, user.password)
             .then(valid => {
-                console.log(valid);
                 if (!valid){
                     res.status(401).json({ error: 'paire utilisateur/mot de passe incorrecte !' });
                 }else{
-                    console.log("ok");
                     return res.status(200).json({
                         userId: user._id,
                         token: jwt.sign(
